@@ -6,7 +6,7 @@ if (strpos($user_agent, 'Windows') !== false) {
     // User is on Windows
     $filename = 'install.ps1';
 } else {
-    // User is on Mac or Linux
+    // User is whatever else that probably has bash
     $filename = 'install.sh';
 }
 
