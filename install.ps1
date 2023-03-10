@@ -1,13 +1,44 @@
-# Install Chocolatey if it's not already installed
 if (!(Get-Command choco -ErrorAction SilentlyContinue)) {
-    Set-ExecutionPolicy Bypass -Scope Process -Force
     iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 }
 
-# Define list of software to install
-$softwareList = "googlechrome", "firefox", "7zip", "notepadplusplus"
+$softwareList =
+    "googlechrome",
+    "discord",
+    "spotify",
+    "sharex",
+    "teracopy",
+    "7zip",
+    "notepadplusplus",
+    "firefox",
+    "zoom",
+    "steam",
+    "foobar2000",
+    "k-litecodecpackfull",
+    "gimp",
+    "irfanview",
+    "barrier"
 
-# Loop through list and install software using Chocolatey
 foreach ($software in $softwareList) {
     choco install $software -y
 }
+
+Read-Host "done"
+
+<#
+- Check for home disk, change to H
+- fix explorer to this pc, extensions, hidden files
+- Point userprofile folders to H:\folder
+- clean all the shit from start menu
+- Fix taskbar
+- Hide recycling bin
+- enable admin share h$?
+- enable and install wsl
+- enable hyperv
+
+things to install
+
+nvidia drivers?
+
+xivlauncher
+#>
