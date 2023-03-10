@@ -1,29 +1,20 @@
 <?php
 
-echo $_SERVER['HTTP_USER_AGENT'];
+$user_agent = $_SERVER['HTTP_USER_AGENT'];
 
-$scripts_dir = "scripts";
-
-if ( preg_match('/.*Windows.*/', $_SERVER['HTTP_USER_AGENT'])) {
-    $script = "install.ps1";
+if (strpos($user_agent, 'Windows') !== false) {
+    // User is on Windows
+    $filename = 'install.ps1';
 } else {
-    $script = "install.sh";
+    // User is on Mac or Linux
+    $filename = 'install.sh';
 }
 
-$file = "$scripts_dir/$script";
+header('Content-Type: application/octet-stream');
+header('Content-Disposition: attachment; filename="' . $filename . '"');
+header('Content-Transfer-Encoding: binary');
+header('Content-Length: ' . filesize($filename));
 
-# https://stackoverflow.com/a/27805443
-$finfo = finfo_open("text/plain");
-header("Content-Type: " . finfo_file($finfo, $file));
-finfo_close($finfo);
+readfile($filename);
 
-header("Content-Disposition: attachment; filename=$script");
-header("Expires: 0");
-header("Cache-Control: must-revalidate");
-header("Pragma: public");
-header("Content-Length: " . filesize($file));
-
-ob_clean();
-flush();
-readfile($file);
-exit;
+?>
