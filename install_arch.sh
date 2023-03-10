@@ -67,7 +67,7 @@ if [ $home_disk != $root_disk ]; then
     mount --mkdir $home_part /mnt/home
 fi
 
-pacstrap -K /mnt base linux linux-firmware dhcpcd iwd grub efibootmgr vim man-db man-pages texinfo base-devel reflector zsh git
+pacstrap -K /mnt base linux linux-firmware dhcpcd iwd grub efibootmgr vi vim man-db man-pages texinfo base-devel reflector zsh git
 
 genfstab -U /mnt >> /mnt/etc/fstab
 echo "LANG=en_GB.UTF-8" > /mnt/etc/locale.conf
@@ -85,6 +85,8 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 useradd -m -G wheel -s /bin/zsh $user
 echo '#disable zsh config' > /home/$user/.zshrc
+
+sed -i '0,/^# %wheel/{s/^# %wheel/%wheel/}' /etc/sudoers
 
 systemctl enable dhcpcd
 EOF
