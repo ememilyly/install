@@ -67,7 +67,7 @@ if [ $home_disk != $root_disk ]; then
     mount --mkdir $home_part /mnt/home
 fi
 
-pacstrap -K /mnt base linux linux-firmware dhcpcd iwd grub efibootmgr vi vim man-db man-pages texinfo base-devel reflector zsh git
+pacstrap -K /mnt base linux linux-firmware dhcpcd iwd grub efibootmgr vi vim man-db man-pages texinfo base-devel reflector zsh git xorg-server xorg-xinit xorg-xrandr xf86-video-nouveau xf86-video-intel xf86-video-fbdev ttf-dejavu kitty i3
 
 genfstab -U /mnt >> /mnt/etc/fstab
 echo "LANG=en_GB.UTF-8" > /mnt/etc/locale.conf
@@ -83,10 +83,11 @@ mkinitcpio -P
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
+sed -i '0,/^# %wheel/{s/^# %wheel/%wheel/}' /etc/sudoers
+
 useradd -m -G wheel -s /bin/zsh $user
 echo '#disable zsh config' > /home/$user/.zshrc
-
-sed -i '0,/^# %wheel/{s/^# %wheel/%wheel/}' /etc/sudoers
+echo 'exec i3' > /home/$user/.xinitrc
 
 systemctl enable dhcpcd
 EOF
@@ -94,4 +95,4 @@ EOF
 arch-chroot /mnt bash /chroot-install.sh
 rm /mnt/chroot-install.sh
 
-echo "change root and $user password then reboot :)"
+echo "arch-chroot /mnt and change root and $user password then reboot :)"
