@@ -4,7 +4,7 @@ echo $_SERVER['HTTP_USER_AGENT'];
 
 $scripts_dir = "scripts";
 
-if str_contains($_SERVER['HTTP_USER_AGENT'], "Windows") {
+if ( preg_match('/.*Windows.*/', $_SERVER['HTTP_USER_AGENT'])) {
     $script = "install.ps1";
 } else {
     $script = "install.sh";
@@ -25,5 +25,5 @@ header("Content-Length: " . filesize($file));
 
 ob_clean();
 flush();
-readfile(file);
+readfile($file);
 exit;
