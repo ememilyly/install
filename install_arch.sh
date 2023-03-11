@@ -67,7 +67,7 @@ if [ $home_disk != $root_disk ]; then
     mount --mkdir $home_part /mnt/home
 fi
 
-pacstrap -K /mnt base linux linux-firmware dhcpcd iwd grub efibootmgr vi vim man-db man-pages texinfo base-devel reflector zsh git xorg-server xorg-xinit xorg-xrandr xf86-video-nouveau xf86-video-intel xf86-video-fbdev ttf-dejavu kitty i3
+pacstrap -K /mnt base linux linux-firmware dhcpcd iwd grub efibootmgr vi vim man-db man-pages texinfo base-devel reflector zsh git xorg-server xorg-xinit xorg-xrandr xf86-video-nouveau xf86-video-intel xf86-video-fbdev ttf-dejavu kitty i3 go
 
 genfstab -U /mnt >> /mnt/etc/fstab
 echo "LANG=en_GB.UTF-8" > /mnt/etc/locale.conf

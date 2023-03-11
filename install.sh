@@ -10,9 +10,35 @@ if [[ -f /etc/arch-release ]]; then
         curl -sL "$INSTALL_URL/install_arch.sh" | bash
         exit
     else
-        echo "just installing some packages and dotfiles then"
+        # TODO: github key check first then can let it run
+        if ! command -v yay &> /dev/null; then
+            # first install yay
+            git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si --noconfirm
+            cd && rm -rf yay
+        fi
+        yay -S --noconfirm fzf htop jq mtr bind ranger mpd ncmpcpp tmux zsh-syntax-highlighting chromium discord spotify feh mpv barrier python-pip
     fi
+elif [[ -f /etc/mac-release ]]; then
+    # mac TODO: fix above
+    echo hi mac
 elif [[ -f /etc/redhat-release ]]; then
-    # centos
+    # rh based
     echo hi centos
 fi
+
+pip install black flake8 hyfetch
+
+# get dotfiles
+mkdir -p ~/dev/scripts
+cd ~/dev && git clone https://github.com/ememilyly/dotfiles.git
+
+cp -rf dotfiles/* ~
+rm -rf ~/.git
+
+# vim-plug
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+# TODO: figure out how to make bash send the quotes
+#eval('vim +"PlugInstall --sync" +qa')
+
