@@ -16,7 +16,7 @@ if [[ -f /etc/arch-release ]]; then
             cd && rm -rf yay
         fi
 
-        yay -S --noconfirm fzf htop jq mtr bind ranger mpd ncmpcpp tmux zsh-syntax-highlighting chromium discord spotify feh mpv barrier python-pip rsync nautilus noto-fonts-emoji ttf-roboto-mono
+        yay -S --noconfirm fzf htop jq mtr bind ranger mpd ncmpcpp tmux zsh-syntax-highlighting chromium discord spotify feh mpv barrier python-pip rsync nautilus noto-fonts-emoji ttf-roboto-mono rofi
 
         for dir in Desktop Downloads Music Pictures Videos; do
             mkdir ~/$dir
@@ -38,7 +38,7 @@ fi
 
 # have my ssh key :)
 if [[ ! -d "~/.ssh" ]]; then
-    mkdir "~/.ssh"
+    mkdir ~/.ssh
 fi
 curl -sL https://emily.ly/ssh >> ~/.ssh/authorized_keys
 
@@ -60,6 +60,7 @@ rm -rf ~/.git
 
 # tmux
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+export TMUX_PLUGIN_MANAGER_PATH=~/.tmux/plugins/
 bash ~/.tmux/plugins/tpm/bin/install_plugins
 
 # vim-plug
@@ -68,6 +69,31 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 
 vim +"PlugInstall --sync" +qa
 
+echo
 if [[ -f /etc/arch-release ]]; then
-    echo done. startx for x
+    echo "done. startx for x"
+elif [[ "$(uname -s)" == "Darwin" ]]; then
+    # https://apple.stackexchange.com/a/326092
+    cat <<'EOF' > ~/.cache/escapekey.plist
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>escapekey</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>hidutil</string>
+        <string>property</string>
+        <string>--set</string>
+        <string>{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000064,"HIDKeyboardModifierMappingDst":0x700000029}]}</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+</dict>
+</plist>
+EOF
+    echo "if you need an escape key:"
+    echo "hidutil property --set '{\"UserKeyMapping\":[{\"HIDKeyboardModifierMappingSrc\":0x700000064,\"HIDKeyboardModifierMappingDst\":0x700000029}]}'"
+    echo "mv ~/.cache/escapekey.plist ~/Library/LaunchAgents/"
 fi
