@@ -16,7 +16,7 @@ if [[ -f /etc/arch-release ]]; then
             cd && rm -rf yay
         fi
 
-        yay -S --noconfirm fzf htop jq mtr bind ranger mpd ncmpcpp tmux zsh-syntax-highlighting chromium discord spotify feh mpv barrier python-pip rsync nautilus
+        yay -S --noconfirm fzf htop jq mtr bind ranger mpd ncmpcpp tmux zsh-syntax-highlighting chromium discord spotify feh mpv barrier python-pip rsync nautilus noto-fonts-emoji ttf-roboto-mono
 
         for dir in Desktop Downloads Music Pictures Videos; do
             mkdir ~/$dir
