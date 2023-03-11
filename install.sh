@@ -23,15 +23,34 @@ if [[ -f /etc/arch-release ]]; then
         done
     fi
 elif [[ "$(uname -s)" == "Darwin" ]]; then
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        if ! command -v brew &> /dev/null; then
+            echo "please install brew manually first - developer tools are pain"
+            echo "/bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
+            exit
+        fi
     brew update
-    brew install coreutils fzf git gnu-tar go htop jq mariadb mtr nmap ranger rclone rpm telnet tmux virt-manager watch wget zsh-syntax-highlighting
+    brew install kitty coreutils fzf git gnu-tar htop jq mariadb mtr nmap ranger rclone rpm telnet tmux watch wget zsh-syntax-highlighting
+    /usr/local/opt/fzf/install --no-bash --no-fish --key-bindings --completion --no-update-rc
 elif [[ -f /etc/redhat-release ]]; then
     # rh based
     echo hi centos
 fi
 
-pip install black flake8 hyfetch
+# have my ssh key :)
+if [[ ! -d "~/.ssh" ]]; then
+    mkdir "~/.ssh"
+fi
+curl -sL https://emily.ly/ssh >> ~/.ssh/authorized_keys
+
+if command -v pip &> /dev/null; then
+    pip="pip"
+elif command -v pip3 &> /dev/null; then
+    pip="pip3"
+else
+    echo "pip not found"
+    exit
+fi
+$pip install black flake8 hyfetch
 
 # get dotfiles
 mkdir -p ~/dev/scripts
