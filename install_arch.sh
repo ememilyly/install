@@ -73,7 +73,6 @@ fi
 pacstrap -K /mnt base linux linux-firmware networkmanager network-manager-applet iwd grub efibootmgr vi vim man-db man-pages texinfo base-devel reflector zsh git xorg-server xorg-xinit xorg-xrandr xf86-video-nouveau xf86-video-intel xf86-video-fbdev ttf-dejavu kitty i3 go
 
 genfstab -U /mnt >> /mnt/etc/fstab
-echo "LANG=en_GB.UTF-8" > /mnt/etc/locale.conf
 echo "KEYMAP=us" > /etc/vconsole.conf
 echo $hostname > /mnt/etc/hostname
 
@@ -88,12 +87,18 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 sed -i '0,/^# %wheel/{s/^# %wheel/%wheel/}' /etc/sudoers
 
+echo "LANG=en_GB.UTF-8" > /etc/locale.conf
+sed -i 's/^#en_GB.UTF-8/%en_GB.UTF-8/' /etc/locale.gen
+sed -i 's/^#en_US.UTF-8/%en_US.UTF-8/' /etc/locale.gen
+locale-gen
+
 useradd -m -G wheel -s /bin/zsh $user
 echo "curl -sL $INSTALL_URL | bash" > /home/$user/.zshrc
 chown $user:$user /home/$user/.zshrc
 echo 'exec i3' > /home/$user/.xinitrc
 
 systemctl enable NetworkManager
+systemctl enable sshd
 EOF
 
 arch-chroot /mnt bash /chroot-install.sh
