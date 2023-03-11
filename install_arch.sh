@@ -86,7 +86,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 sed -i '0,/^# %wheel/{s/^# %wheel/%wheel/}' /etc/sudoers
 
 useradd -m -G wheel -s /bin/zsh $user
-echo '#disable zsh config' > /home/$user/.zshrc
+echo 'echo make an ssh key and add it to github' > /home/$user/.zshrc
 echo 'exec i3' > /home/$user/.xinitrc
 
 systemctl enable dhcpcd
