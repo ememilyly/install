@@ -1,5 +1,7 @@
 #!/bin/bash
 
+INSTALL_URL="https://emily.ly/install"
+
 loadkeys us
 
 # check efi
@@ -11,6 +13,7 @@ fi
 # get input for user and disks
 
 read -p "hostname: " hostname < /dev/tty
+hostname=${hostname:-imdumbanddidntprovideahostnamesoigetthislongdefaultone}
 read -p "user to create [emily]: " user < /dev/tty
 user=${user:-emily}
 echo "will create $user eventually"
@@ -19,7 +22,7 @@ echo
 echo "partition disks"
 echo "give me disk name i will wipe it and put one big partition on it"
 echo "if you put home on the same disk it will all be one big happy partition"
-echo "this WILL reformat specified disks so don't continue if you're a pussy"
+echo "this WILL reformat specified disks"
 echo
 echo lsblk:
 lsblk
@@ -67,7 +70,7 @@ if [ $home_disk != $root_disk ]; then
     mount --mkdir $home_part /mnt/home
 fi
 
-pacstrap -K /mnt base linux linux-firmware dhcpcd iwd grub efibootmgr vi vim man-db man-pages texinfo base-devel reflector zsh git xorg-server xorg-xinit xorg-xrandr xf86-video-nouveau xf86-video-intel xf86-video-fbdev ttf-dejavu kitty i3 go
+pacstrap -K /mnt base linux linux-firmware networkmanager network-manager-applet iwd grub efibootmgr vi vim man-db man-pages texinfo base-devel reflector zsh git xorg-server xorg-xinit xorg-xrandr xf86-video-nouveau xf86-video-intel xf86-video-fbdev ttf-dejavu kitty i3 go
 
 genfstab -U /mnt >> /mnt/etc/fstab
 echo "LANG=en_GB.UTF-8" > /mnt/etc/locale.conf
@@ -86,10 +89,11 @@ grub-mkconfig -o /boot/grub/grub.cfg
 sed -i '0,/^# %wheel/{s/^# %wheel/%wheel/}' /etc/sudoers
 
 useradd -m -G wheel -s /bin/zsh $user
-echo 'echo make an ssh key and add it to github' > /home/$user/.zshrc
+echo "curl -sL $INSTALL_URL | bash" > /home/$user/.zshrc
+chown $user:$user /home/$user/.zshrc
 echo 'exec i3' > /home/$user/.xinitrc
 
-systemctl enable dhcpcd
+systemctl enable NetworkManager
 EOF
 
 arch-chroot /mnt bash /chroot-install.sh

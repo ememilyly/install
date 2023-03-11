@@ -16,7 +16,7 @@ if [[ -f /etc/arch-release ]]; then
             git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si --noconfirm
             cd && rm -rf yay
         fi
-        yay -S --noconfirm fzf htop jq mtr bind ranger mpd ncmpcpp tmux zsh-syntax-highlighting chromium discord spotify feh mpv barrier python-pip
+        yay -S --noconfirm fzf htop jq mtr bind ranger mpd ncmpcpp tmux zsh-syntax-highlighting chromium discord spotify feh mpv barrier python-pip rsync
     fi
 elif [[ -f /etc/mac-release ]]; then
     # mac TODO: fix above
@@ -30,15 +30,16 @@ pip install black flake8 hyfetch
 
 # get dotfiles
 mkdir -p ~/dev/scripts
-cd ~/dev && git clone https://github.com/ememilyly/dotfiles.git
-
-cp -rf dotfiles/* ~
+cd ~/dev && git clone https://github.com/ememilyly/dotfiles.git && cd
+rsync -a ~/dev/dotfiles/ ~
 rm -rf ~/.git
 
 # vim-plug
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-# TODO: figure out how to make bash send the quotes
-#eval('vim +"PlugInstall --sync" +qa')
+vim +"PlugInstall --sync" +qa
 
+if [[ -f /etc/arch-release ]]; then
+    echo done. startx for x
+fi
