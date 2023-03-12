@@ -33,7 +33,7 @@ elif [[ "$(uname -s)" == "Darwin" ]]; then
     /usr/local/opt/fzf/install --no-bash --no-fish --key-bindings --completion --no-update-rc
 elif [[ -f /etc/redhat-release ]]; then
     sudo yum update -y
-    sudo yum install -y zsh python3-pip git tmux
+    sudo yum install -y zsh python3-pip git tmux vim
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.local/share/zsh-syntax-highlighting
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.local/share/fzf
     ~/.local/share/fzf/install --no-bash --no-fish --key-bindings --completion --no-update-rc
