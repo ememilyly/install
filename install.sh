@@ -29,11 +29,12 @@ elif [[ "$(uname -s)" == "Darwin" ]]; then
             exit
         fi
     brew update
-    brew install kitty coreutils fzf git gnu-tar htop jq mariadb mtr nmap ranger rclone rpm telnet tmux watch wget zsh-syntax-highlighting
+    brew install kitty coreutils fzf git gnu-tar htop jq mtr nmap ranger rclone rpm telnet tmux watch wget zsh-syntax-highlighting google-chrome macvim
     /usr/local/opt/fzf/install --no-bash --no-fish --key-bindings --completion --no-update-rc
 elif [[ -f /etc/redhat-release ]]; then
-    # rh based
-    echo hi centos
+    sudo yum install -y zsh zsh-syntax-highlighting vim python3-pip git
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.local/share/fzf
+    ~/.local/share/fzf/install --no-bash --no-fish --key-bindings --completion --no-update-rc
 fi
 
 # have my ssh key :)
@@ -53,7 +54,7 @@ fi
 $pip install black flake8 hyfetch
 
 # get dotfiles
-mkdir -p ~/dev/scripts
+mkdir  ~/dev
 cd ~/dev && git clone https://github.com/ememilyly/dotfiles.git && cd
 rsync -a ~/dev/dotfiles/ ~
 rm -rf ~/.git
@@ -66,14 +67,16 @@ bash ~/.tmux/plugins/tpm/bin/install_plugins
 # vim-plug
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
 vim +"PlugInstall --sync" +qa
 
 echo
 if [[ -f /etc/arch-release ]]; then
+    # vim takes up the entire console
+    clear
     echo "done. startx for x"
 elif [[ "$(uname -s)" == "Darwin" ]]; then
     # https://apple.stackexchange.com/a/326092
+    mkdir ~/.cache
     cat <<'EOF' > ~/.cache/escapekey.plist
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">

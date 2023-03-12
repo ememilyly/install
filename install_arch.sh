@@ -88,8 +88,8 @@ grub-mkconfig -o /boot/grub/grub.cfg
 sed -i '0,/^# %wheel/{s/^# %wheel/%wheel/}' /etc/sudoers
 
 echo "LANG=en_GB.UTF-8" > /etc/locale.conf
-sed -i 's/^#en_GB.UTF-8/%en_GB.UTF-8/' /etc/locale.gen
-sed -i 's/^#en_US.UTF-8/%en_US.UTF-8/' /etc/locale.gen
+sed -i 's/^#en_GB.UTF-8/en_GB.UTF-8/' /etc/locale.gen
+sed -i 's/^#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
 locale-gen
 
 useradd -m -G wheel -s /bin/zsh $user
