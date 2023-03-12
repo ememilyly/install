@@ -32,6 +32,9 @@ elif [[ "$(uname -s)" == "Darwin" ]]; then
     brew install kitty coreutils fzf git gnu-tar htop jq mtr nmap ranger rclone rpm telnet tmux watch wget zsh-syntax-highlighting google-chrome macvim
     /usr/local/opt/fzf/install --no-bash --no-fish --key-bindings --completion --no-update-rc
 elif [[ -f /etc/redhat-release ]]; then
+    sudo yum install -y epel-release
+    sudo yum clean all
+    sudo yum update -y
     sudo yum install -y zsh zsh-syntax-highlighting vim python3-pip git
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.local/share/fzf
     ~/.local/share/fzf/install --no-bash --no-fish --key-bindings --completion --no-update-rc
